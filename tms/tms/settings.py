@@ -45,7 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'ticket',
 ]
+
+SITE_ID=1
 
 
 MIDDLEWARE = [
