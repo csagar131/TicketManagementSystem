@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 
-class SignupUserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
             required=True,
             validators=[UniqueValidator(queryset=User.objects.all())]
@@ -15,15 +15,21 @@ class SignupUserSerializer(serializers.ModelSerializer):
             )
     password = serializers.CharField(min_length=8)
     
-    org_name = serializers.CharField(max_length = 255)
 
     class Meta:
         model = User
-        fields = ('id','username', 'email', 'password','org_name','is_author')
+        fields = ('id','username', 'email', 'password')
 
 
+class AgentUserSerializer(serializers.ModelSerializer):
+        email = serializers.EmailField(
+            required=True,
+            validators=[UniqueValidator(queryset=User.objects.all())]
+            )
 
-
+        class Meta:
+                model = User
+                fields = ('id','email')
 
 
 

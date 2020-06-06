@@ -10,7 +10,7 @@ class UserAdmin(BaseUserAdmin):
         (                      # new fieldset added on to the bottom
             'Additional Details',  # group heading of your choice; set to None for a blank space instead of a header
             {
-                'fields': ('is_admin','org_name','image'),
+                'fields': ('is_admin','image','organization'),
             },
         ),
     )
