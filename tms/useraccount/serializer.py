@@ -14,11 +14,11 @@ class UserSerializer(serializers.ModelSerializer):
             validators=[UniqueValidator(queryset=User.objects.all())]
             )
     password = serializers.CharField(min_length=8)
-    
+    org_name = serializers.CharField(max_length=255)    
 
     class Meta:
         model = User
-        fields = ('id','username', 'email', 'password')
+        fields = ('id','username', 'email', 'password','org_name')
 
 
 class AgentUserSerializer(serializers.ModelSerializer):
