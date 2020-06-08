@@ -29,6 +29,29 @@ DEBUG = False
 ALLOWED_HOSTS = ['13.235.42.98']
 
 
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,6 +69,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'ticket',
+    'corsheaders',
 ]
 
 SITE_ID=1
@@ -59,7 +83,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'tms.urls'
 
