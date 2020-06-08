@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from useraccount.serializer import UserSerializer,AgentUserSerializer
 from rest_framework.views import APIView
@@ -60,7 +61,7 @@ def password_generator():
 class UserModelViewset(ModelViewSet):
     serializer_class = UserSerializer
     authentication_classes = [TokenAuthentication]
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_admin = True)
 
     def create(self,request,*args,**kwargs):
         ser_data = self.get_serializer(data = request.data)
@@ -77,7 +78,7 @@ class UserModelViewset(ModelViewSet):
             token = str(Token.objects.create(user=user))
             return JsonResponse({'token':token,'user':ser_data.data})
         else:
-            return JsonResponse(ser_data.errors)
+            return JsonResponse(ser_data.errors,status = status.HTTP_400_BAD_REQUEST)
 
 
 class AgentUserViewSet(ModelViewSet):
@@ -94,9 +95,15 @@ class AgentUserViewSet(ModelViewSet):
             user = User.objects.create_user(username=username,password= password,email = email,organization = org)
             usr_ser = UserSerializer(user)
             token = str(Token.objects.create(user=user))
-            return JsonResponse({'token':token,'username':username,'password':password})
+            msg_html = render_to_string('email_agent.html',{'org':request.data.get('org_name'),'username':username,'password':password})
+            send_mail('Invitation TMS','','chouhansagar131@gmail.com',
+                    [request.data['email'],'chouhansagar131@gmail.com'],
+                    fail_silently=False,
+                    html_message=msg_html,
+            )
+            return JsonResponse({'token':token,'username':username})
         else:
-            return JsonResponse(ser_data.errors)
+            return JsonResponse(ser_data.errors,status = status.HTTP_400_BAD_REQUEST)
 
 
 

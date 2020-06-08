@@ -1,5 +1,5 @@
 from django.contrib import admin
-from useraccount.models import User
+from useraccount.models import User,Ticket
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # Register your models here.
 
@@ -17,6 +17,6 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(User,UserAdmin)
-
+admin.site.register(Ticket)
 
 
